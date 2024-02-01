@@ -1,0 +1,94 @@
+<!DOCTYPE html> <html lang="en"> <head> <meta charset="UTF-8"> <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Discord Webhook Integration</title> <style> body { font-family: Arial, sans-serif; background-color: #f2f2f2; padding: 20px; }
+h1 {
+  text-align: center;
+  color: #333;
+}
+
+.container {
+  max-width: 500px;
+  margin: 0 auto;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 5px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: bold;
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 3px;
+}
+
+button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  background-color: #333;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #555;
+}
+  </style>
+</head>
+<body>
+  <h1>Discord Webhook Integration</h1>
+  <div class="container">
+    <form id="messageForm">
+      <label for="message">Message:</label>
+      <input type="text" id="message" name="message" placeholder="Type your message here" required>
+      <button type="submit">Send Message</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById("messageForm").addEventListener("submit", function(event) {
+      event.preventDefault();
+      var message = document.getElementById("message").value;
+      var webhookUrl = "https://discord.com/api/webhooks/1202407931333709824/Y524Qcdg0YTetdW-s7fHMEk_RHS-wsxENx0zgxC79y8retty-zZzQa_YMpchCqe2pTz-";
+
+      // Words to filter
+      var disallowedWords = ["fuck", "nigger", "nigga", "niga", "niger", "fuk", "fzck", "fxck", "bitch", "btch", "bxtch", "ngr", "nixger"];
+
+      // Check if the message contains any disallowed words
+      if (containsDisallowedWord(message, disallowedWords)) {
+        alert("Your message contains disallowed words.");
+        return;
+      }
+
+      var request = new XMLHttpRequest();
+      request.open("POST", webhookUrl, true);
+      request.setRequestHeader("Content-type", "application/json");
+
+      var payload = {
+        content: message
+      };
+
+      request.send(JSON.stringify(payload));
+    });
+
+    // Function to check if the message contains any disallowed words
+    function containsDisallowedWord(message, disallowedWords) {
+      var lowercasedMessage = message.toLowerCase();
+      for (var i = 0; i < disallowedWords.length; i++) {
+        var lowercasedWord = disallowedWords[i].toLowerCase();
+        if (lowercasedMessage.includes(lowercasedWord)) {
+          return true;
+        }
+      }
+      return false;
+    }
+  </script>
+</body>
+</html>
